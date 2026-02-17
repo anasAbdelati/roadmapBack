@@ -1,5 +1,7 @@
 package org.roadmapBack.controller;
 
+import org.roadmapBack.dto.RoadMap;
+import org.roadmapBack.service.RoadmapService;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,14 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/v1/roadMap")
 public class RoadMapController {
 
-    private final ChatModel chat;
+    private final RoadmapService roadmapService;
 
-    public RoadMapController(ChatModel chat) {
-        this.chat = chat;
+    public RoadMapController(RoadmapService roadmapService) {
+        this.roadmapService = roadmapService;
     }
 
-    @GetMapping("/call")
-    public String testMethod(@RequestParam(defaultValue = "Is the API working?") String message){
-        return chat.call(message);
+    @GetMapping("/generate")
+    public RoadMap generate(@RequestParam String topic) {
+        return roadmapService.generateRoadmap(topic);
     }
 }

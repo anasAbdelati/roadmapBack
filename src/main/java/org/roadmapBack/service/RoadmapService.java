@@ -1,6 +1,6 @@
 package org.roadmapBack.service;
 
-import org.roadmapBack.dto.RoadMap;
+import org.roadmapBack.data.RoadMap;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package org.roadmapBack.dto;
+package org.roadmapBack.data;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

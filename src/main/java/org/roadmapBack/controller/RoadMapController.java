@@ -1,8 +1,7 @@
 package org.roadmapBack.controller;
 
-import org.roadmapBack.dto.RoadMap;
+import org.roadmapBack.data.RoadMap;
 import org.roadmapBack.service.RoadmapService;
-import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

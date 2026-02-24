@@ -1,12 +1,14 @@
 package org.roadmapBack.service;
 
 import org.roadmapBack.data.User;
+import org.roadmapBack.dto.RegisterRequestDto;
+import org.roadmapBack.dto.UserDto;
+import org.roadmapBack.exceptions.UserAlreadyExistsException;
+import org.roadmapBack.exceptions.UserNotFoundException;
 import org.roadmapBack.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,37 +23,29 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User register(User user) {
-        if(userRepository.findUserByEmail(user.getEmail()) != null) {
-            throw new RuntimeException("Email already exists");
+    public UserDto register(RegisterRequestDto request) {
+        if(userRepository.findUserByEmail(request.getEmail()) != null) {
+            throw new UserAlreadyExistsException("Email already exists");
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        final var user=User.builder()
+                .name(request.getName())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .build();
+        final var savedUser = userRepository.save(user);
+        return UserDto.builder().name(savedUser.getName()).email(savedUser.getEmail()).build();
     }
 
-    public User Login(String email, String password){
-        final var user=findUserByEmail(email);
-        if(user == null) {
-            throw new RuntimeException("Email or password are not correct or account doesn't exist");
-        }
-        final var hashedPassword=passwordEncoder.encode(password);
-        if(!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Email or password are not correct");
-        }
-        return user;
-    }
-
-    //TODO refactor and change exceptions
-    public User findUserByEmail(String email) {
+    public User findUserByEmail(String email){
         final var user=userRepository.findUserByEmail(email);
         if(user == null) {
-            throw new RuntimeException("Email or password are not correct or account doesn't exist");
+            throw new UserNotFoundException("User not found");
         }
         return user;
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findUserByEmail(email);
+        return findUserByEmail(email);
     }
 }

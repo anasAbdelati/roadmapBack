@@ -13,7 +13,7 @@ import java.io.IOException;
 class AuthEntryPointJwt implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        //TODO change status or test it
+
         response.setStatus(401);
         response.setContentType("application/json");
         response.getWriter().write("{\"error\": \"Unauthorized\", \"message\": \"Invalid or missing JWT token\"}");

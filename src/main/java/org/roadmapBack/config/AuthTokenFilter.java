@@ -37,22 +37,21 @@ class AuthTokenFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        //remove  "Bearer "
-        token = authHeader.substring(7);
-        email = jwtUtils.extractEmail(token);
+        try {
+            //remove  "Bearer "
+            token = authHeader.substring(7);
+            email = jwtUtils.extractEmail(token); // if this doesn't throw, token is valid
 
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            final var user = userService.findUserByEmail(email);
-
-            if (jwtUtils.isTokenValid(token)) {
-                //TODO add roles later to User ok
+            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                final var user = userService.findUserByEmail(email);
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         user, null, Collections.emptyList());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
+        } catch (Exception e) {
+            // invalid/expired token, spring security handles the 401
         }
-
         filterChain.doFilter(request, response);
     }
 }

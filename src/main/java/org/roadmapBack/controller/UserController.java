@@ -1,5 +1,6 @@
 package org.roadmapBack.controller;
 
+import jakarta.validation.Valid;
 import org.roadmapBack.dto.RegisterRequestDto;
 import org.roadmapBack.dto.UserDto;
 import org.roadmapBack.service.UserService;
@@ -19,7 +20,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public UserDto register(@RequestBody RegisterRequestDto request){
+    public UserDto register(@Valid @RequestBody RegisterRequestDto request){
         return userService.register(request);
     }
 }

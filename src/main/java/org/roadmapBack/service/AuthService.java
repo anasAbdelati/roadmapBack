@@ -3,6 +3,7 @@ package org.roadmapBack.service;
 import org.roadmapBack.config.JwtUtils;
 import org.roadmapBack.dto.AuthResponseDto;
 import org.roadmapBack.dto.LoginRequestDto;
+import org.roadmapBack.dto.RefreshRequestDto;
 import org.roadmapBack.exceptions.InvalidRefreshTokenException;
 import org.roadmapBack.exceptions.WrongcredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,7 +33,8 @@ public class AuthService {
                 .build();
     }
 
-    public AuthResponseDto refresh(String refreshToken){
+    public AuthResponseDto refresh(RefreshRequestDto refreshRequest){
+        final var refreshToken=refreshRequest.getRefreshToken();
         if(!jwtUtils.isTokenValid(refreshToken)){
             throw new InvalidRefreshTokenException("Invalid refresh token");
         }

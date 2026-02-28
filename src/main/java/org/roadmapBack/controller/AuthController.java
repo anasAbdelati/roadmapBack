@@ -1,7 +1,9 @@
 package org.roadmapBack.controller;
 
+import jakarta.validation.Valid;
 import org.roadmapBack.dto.AuthResponseDto;
 import org.roadmapBack.dto.LoginRequestDto;
+import org.roadmapBack.dto.RefreshRequestDto;
 import org.roadmapBack.service.AuthService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,12 +21,12 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public AuthResponseDto login(@RequestBody LoginRequestDto request){
+    public AuthResponseDto login(@Valid @RequestBody LoginRequestDto request){
         return authService.login(request);
     }
 
     @PostMapping("/refresh")
-    public AuthResponseDto refresh(@RequestBody String refreshToken){
+    public AuthResponseDto refresh(@Valid @RequestBody RefreshRequestDto refreshToken){
         return authService.refresh(refreshToken);
     }
 }

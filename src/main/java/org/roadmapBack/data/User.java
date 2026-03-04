@@ -23,6 +23,11 @@ public class User implements UserDetails {
     private String password;
     private List<String> roadmapIds;
 
+    //TODO check if list good practice that we can get it directly or nah
+    public void addRoadmapId(String roadmapId){
+        roadmapIds.add(roadmapId);
+    }
+
     @Override
     public String getUsername() {
         return email;

@@ -4,6 +4,8 @@ import jakarta.validation.Valid;
 import org.roadmapBack.dto.RegisterRequestDto;
 import org.roadmapBack.dto.UserDto;
 import org.roadmapBack.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +22,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public UserDto register(@Valid @RequestBody RegisterRequestDto request){
-        return userService.register(request);
+    public ResponseEntity<UserDto> register(@Valid @RequestBody RegisterRequestDto request){
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.register(request));
     }
 }

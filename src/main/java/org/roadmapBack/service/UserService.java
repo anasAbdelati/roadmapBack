@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class UserService implements UserDetailsService {
 
@@ -31,8 +33,9 @@ public class UserService implements UserDetailsService {
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .roadMapSummaries(new ArrayList<>())
                 .build();
-        final var savedUser = userRepository.save(user);
+        final var savedUser = saveUser(user);
         return UserDto.builder().name(savedUser.getName()).email(savedUser.getEmail()).build();
     }
 
@@ -42,6 +45,10 @@ public class UserService implements UserDetailsService {
             throw new UserNotFoundException("User not found");
         }
         return user;
+    }
+
+    public User saveUser(User user){
+        return userRepository.save(user);
     }
 
     @Override

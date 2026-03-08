@@ -4,7 +4,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-class RoadmapNode {
+class RoadMapNode {
     private String id;
     private String name;
     private String description;

@@ -6,7 +6,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -21,11 +20,21 @@ public class User implements UserDetails {
     private String name;
     private String email;
     private String password;
-    private List<String> roadmapIds;
+    private List<RoadMapSummary> roadMapSummaries;
 
-    //TODO check if list good practice that we can get it directly or nah
-    public void addRoadmapId(String roadmapId){
-        roadmapIds.add(roadmapId);
+    public void addRoadMapId(String roadMapId,String topic){
+        roadMapSummaries.add(RoadMapSummary.builder()
+                .id(roadMapId)
+                .topic(topic)
+                .build());
+    }
+
+    public boolean hasRoadmap(String id){
+        return getRoadMapSummaries().stream().anyMatch(roadmapSummary -> roadmapSummary.getId().equals(id));
+    }
+
+    public void deleteRoadMap(String id) {
+        roadMapSummaries.removeIf(summary -> summary.getId().equals(id));
     }
 
     @Override

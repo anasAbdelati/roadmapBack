@@ -5,5 +5,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RoadmapRepository extends MongoRepository<RoadMap,String> {
+public interface RoadMapRepository extends MongoRepository<RoadMap,String> {
+
+    RoadMap findRoadMapById(String id);
+    void deleteRoadMapById(String id);
 }

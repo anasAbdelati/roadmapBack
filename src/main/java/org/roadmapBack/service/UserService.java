@@ -33,7 +33,7 @@ public class UserService implements UserDetailsService {
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .roadmapIds(new ArrayList<>())
+                .roadMapSummaries(new ArrayList<>())
                 .build();
         final var savedUser = saveUser(user);
         return UserDto.builder().name(savedUser.getName()).email(savedUser.getEmail()).build();
